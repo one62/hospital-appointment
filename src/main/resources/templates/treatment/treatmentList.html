@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"/>
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <div>
+        <div>
+            <form th:object="${treatmentSearch}" class="form-inline">
+                <div class="form-group mb-2">
+                    <input type="text" th:field="*{patientName}" class="formcontrol" placeholder="환자 이름을 입력하세요"/>
+                </div>
+                <div class="form-group mb-2">
+                    <input type="text" th:field="*{doctorName}" class="formcontrol" placeholder="의사 이름을 입력하세요"/>
+                </div>
+                <div class="form-group mx-sm-1 mb-2">
+                    <select th:field="*{treatmentStatus}" class="form-control">
+                        <option value="">진료 상태</option>
+                        <option th:each=
+                                        "status : ${T(exercise.onemo.hospitalappointment.domain.TreatmentStatus).values()}"
+                                th:value="${status}"
+                                th:text="${status}">option
+                        </option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary mb-2">검색</button>
+            </form>
+        </div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>환자</th>
+                <th>의사</th>
+                <th>병원명</th>
+                <th>상태</th>
+                <th>일시</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${treatments}">
+                <td th:text="${item.id}"></td>
+                <td th:text="${item.patient.name}"></td>
+                <td th:text="${item.doctor.name}"></td>
+                <td th:text="${item.doctor.hospital.name}"></td>
+                <td th:text="${item.status}"></td>
+                <td th:text="${item.time}"></td>
+                <td>
+                    <a th:if="${item.status.name() == 'APPOINTED'}" href="#"
+                       th:href="'javascript:cancel('+${item.id}+')'"
+                       class="btn btn-danger">취소</a>
+                </td>
+                <td>
+                    <a th:if="${item.status.name() == 'APPOINTED'}" href="#"
+                       th:href="'javascript:treat('+${item.id}+')'"
+                       class="btn btn-secondary">완료</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:replace="fragments/footer :: footer"/>
+</div> <!-- /container -->
+</body>
+<script>
+    function cancel(id) {
+    var form = document.createElement("form");
+    form.setAttribute("method", "post");
+    form.setAttribute("action", "/treatments/" + id + "/cancel");
+    document.body.appendChild(form);
+    form.submit();
+ }
+    function treat(id) {
+    var form = document.createElement("form");
+    form.setAttribute("method", "post");
+    form.setAttribute("action", "/treatments/" + id + "/treat");
+    document.body.appendChild(form);
+    form.submit();
+ }
+</script>
+</html>

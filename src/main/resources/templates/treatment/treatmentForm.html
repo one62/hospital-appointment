@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <form role="form" action="/treatment/new" method="post">
+        <div class="form-group">
+            <label for="patient">환자</label>
+            <select name="patientId" id="patient" class="form-control">
+                <option value="">선택하세요</option>
+                <option th:each="patient : ${patients}"
+                        th:value="${patient.id}"
+                        th:text="${patient.name}" />
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="doctor">의사</label>
+            <select name="doctorId" id="doctor" class="form-control">
+                <option value="">선택하세요</option>
+                <option th:each="doctor : ${doctors}"
+                        th:value="${doctor.id}"
+                        th:text="${doctor.name}" />
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="time">시간</label>
+            <input type="datetime-local" class="form-control" name="time" id="time" step="900">
+        </div>
+        <div class="form-group">
+            <label th:for="status">종류</label>
+            <select name="status" id="status" class="form-control">
+                <option value="">선택하세요</option>
+                <option value="APPOINTED">예약하기</option>
+                <option value="TREATED">진료 기록</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <br/>
+    <div th:replace="fragments/footer :: footer" />
+</div> <!-- /container -->
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"/>
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>병원명</th>
+                <th>진료 과목</th>
+                <th>주소</th>
+                <th>진료 시간</th>
+            </tr>
+            </thead>
+            <tbody>
+            <div th:each="hospital : ${hospitals}">
+                <tr>
+                    <td th:text="${hospital.id}"></td>
+                    <td th:text="${hospital.name}"></td>
+                    <td th:text="${hospital.department}"></td>
+                    <td th:text="${hospital.address}"></td>
+                    <td th:text="${hospital.openingTime} + '-' + ${hospital.closingTime}"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td colspan="100">의사 :
+                        <span class="tab">&#9;</span>
+                        <span th:each="doctor : ${hospital.doctors}"
+                            th:text="${doctor.name} + '&nbsp;&nbsp;&nbsp;&nbsp;'"></span>
+                    </td>
+
+                </tr>
+            </div>
+            </tbody>
+        </table>
+    </div>
+    <div th:replace="fragments/footer :: footer"/>
+</div> <!-- /container -->
+</body>
+</html>
